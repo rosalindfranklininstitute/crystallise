@@ -9,6 +9,7 @@
 import gemmi
 import numpy
 import os.path
+from math import sqrt, ceil
 
 
 # The coordinate data type
@@ -228,9 +229,6 @@ def generate_atomic_model(
     else:
         assert len(unit_cell_parameters) == 6
 
-    # Check the other input
-    assert len(num_unit_cells) == 3
-
     # Check the contents of the asymmetric unit
     if isinstance(asymmetric_unit, str):
         Z = gemmi.Element(asymmetric_unit).atomic_number
@@ -254,6 +252,19 @@ def generate_atomic_model(
     fractional_coordinates = generate_fractional_atom_positions(
         asymmetric_unit, space_group
     )
+
+    # Compute number of unit cells
+    if num_unit_cells is None:
+        num_unit_cells = int(
+            ceil(
+                sqrt(3)
+                * (float(num_atoms) / len(fractional_coordinates)) ** (1.0 / 3.0)
+            )
+        )
+    if isinstance(num_unit_cells, int):
+        num_unit_cells = (num_unit_cells, num_unit_cells, num_unit_cells)
+    else:
+        assert len(num_unit_cells) == 3
 
     # Generate the atomic coordinates
     coordinates = generate_crystal_lattice(
