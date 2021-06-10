@@ -11,6 +11,16 @@ import numpy
 import os.path
 from math import sqrt, ceil
 
+__all__ = [
+    "CoordType",
+    "is_unit_cell_consistent_with_space_group",
+    "generate_fractional_atom_positions",
+    "generate_crystal_lattice",
+    "filter_atoms",
+    "generate_atomic_model",
+    "write_coordinates",
+]
+
 
 # The coordinate data type
 CoordType = [("atomic_number", "i4"), ("x", "f4"), ("y", "f4"), ("z", "f4")]
