@@ -107,6 +107,27 @@ def test_generate_atomic_model_5():
     assert len(coordinates) == num_atoms
 
 
+def test_generate_atomic_model_6():
+
+    unit_cell = None
+    space_group = None
+    num_unit_cells = None
+    asymmetric_unit = "Au"
+    morphology = "sphere"
+    num_atoms = 10
+
+    coordinates = crystallise.generate_atomic_model(
+        unit_cell,
+        space_group,
+        num_unit_cells,
+        asymmetric_unit,
+        morphology,
+        num_atoms,
+    )
+
+    assert len(coordinates) == num_atoms
+
+
 def test_write_coordinates(tmpdir):
 
     unit_cell = (4, 4, 4, 90, 90, 90)

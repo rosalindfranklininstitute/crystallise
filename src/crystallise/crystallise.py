@@ -26,6 +26,46 @@ __all__ = [
 CoordType = [("atomic_number", "i4"), ("x", "f4"), ("y", "f4"), ("z", "f4")]
 
 
+def get_unit_cell(atomic_number):
+    """
+    Get the standard unit cell for a given element.
+
+    From https://www.webelements.com/${name}/crystal_struture.html
+
+    Params:
+        atomic_number (int): The atomic number
+
+    Returns:
+        tuple: The unit cell parameters
+
+    """
+    return {
+        46: (3.8907, 3.8907, 3.8907, 90, 90, 90),
+        79: (4.0782, 4.0782, 4.0782, 90, 90, 90),
+        83: (6.674, 6.117, 3.304, 90, 110.330, 90),
+    }[atomic_number]
+
+
+def get_space_group(atomic_number):
+    """
+    Get the standard space group for a given element.
+
+    From https://www.webelements.com/${name}/crystal_struture.html
+
+    Params:
+        atomic_number (int): The atomic number
+
+    Returns:
+        int: The space group number
+
+    """
+    return {
+        46: 225,
+        79: 225,
+        83: 12,
+    }[atomic_number]
+
+
 def is_unit_cell_consistent_with_space_group(unit_cell, space_group):
     """
     Perform a simple check to see if the crystal system is consistent with the
@@ -217,6 +257,31 @@ def generate_atomic_model(
 
     """
 
+    # Check the contents of the asymmetric unit
+    if isinstance(asymmetric_unit, str):
+
+        # Get the atomic number and init the array
+        Z = gemmi.Element(asymmetric_unit).atomic_number
+        asymmetric_unit = numpy.array(
+            [(Z, 0, 0, 0)],
+            dtype=CoordType,
+        )
+
+        # If we have no unit cell parameters or space group try to get them
+        # from the known table of unit cells and space groups for elements
+        if unit_cell_parameters is None:
+            unit_cell_parameters = get_unit_cell(Z)
+        if space_group_name is None:
+            space_group_name = get_space_group(Z)
+
+    # Get the space group object
+    if isinstance(space_group_name, int):
+        space_group = gemmi.SpaceGroup(space_group_name)
+    else:
+        space_group = gemmi.find_spacegroup_by_name(space_group_name)
+    if space_group is None:
+        raise RuntimeError("Unrecognised space group: %s" % space_group_name)
+
     # Check the length of the unit cell parameters list
     if len(unit_cell_parameters) == 1:
         unit_cell_parameters = (
@@ -238,19 +303,6 @@ def generate_atomic_model(
         )
     else:
         assert len(unit_cell_parameters) == 6
-
-    # Check the contents of the asymmetric unit
-    if isinstance(asymmetric_unit, str):
-        Z = gemmi.Element(asymmetric_unit).atomic_number
-        asymmetric_unit = numpy.array(
-            [(Z, 0, 0, 0)],
-            dtype=CoordType,
-        )
-
-    # Get the space group object
-    space_group = gemmi.find_spacegroup_by_name(space_group_name)
-    if space_group is None:
-        raise RuntimeError("Unrecognised space group: %s" % space_group_name)
 
     # Create the unit cell object
     unit_cell = gemmi.UnitCell(*unit_cell_parameters)

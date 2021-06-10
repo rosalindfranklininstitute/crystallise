@@ -24,7 +24,7 @@ def main(args=None):
         "--unit_cell",
         dest="unit_cell",
         type=lambda s: tuple([float(x) for x in s.split(",")]),
-        default=(1, 1, 1, 90, 90, 90),
+        default=None,
         help="The unit cell parameters",
     )
     parser.add_argument(
@@ -32,7 +32,7 @@ def main(args=None):
         "--space_group",
         dest="space_group",
         type=str,
-        default="P1",
+        default=None,
         help="The space group",
     )
     parser.add_argument(
