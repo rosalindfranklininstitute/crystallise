@@ -7,9 +7,8 @@
 # which is included in the root directory of this package.
 #
 import argparse
-import gemmi
 import logging
-import crystallise.crystallise
+import crystallise
 
 
 def main(args=None):
@@ -97,7 +96,7 @@ def main(args=None):
     logging.basicConfig(level=level, format="%(msg)s")
 
     # Create the atomic model
-    coordinates = crystallise.crystallise.generate_atomic_model(
+    coordinates = crystallise.generate_atomic_model(
         args.unit_cell,
         args.space_group,
         args.num_unit_cells,
@@ -107,4 +106,4 @@ def main(args=None):
     )
 
     # Save the atomic model
-    crystallise.crystallise.write_coordinates(coordinates, args.output)
+    crystallise.write_coordinates(coordinates, args.output)
