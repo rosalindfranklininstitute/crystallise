@@ -34,24 +34,24 @@ def is_unit_cell_consistent_with_space_group(unit_cell, space_group):
 
     # Check floating point values are approximately the same
     def approx(a, b, eps=1e-7):
-        return abs(a-b) < eps
+        return abs(a - b) < eps
 
     # Check the unit cell against the crystal system
     # fmt: off
     return {
         gemmi.CrystalSystem.Triclinic: lambda cell: True,
         gemmi.CrystalSystem.Monoclinic: lambda cell: (
-            approx(cell.alpha, 90) 
+            approx(cell.alpha, 90)
             and approx(cell.gamma, 90)
         ),
         gemmi.CrystalSystem.Orthorhombic: lambda cell: (
             approx(cell.alpha, 90)
-            and approx(cell.beta, 90) 
+            and approx(cell.beta, 90)
             and approx(cell.gamma, 90)
         ),
         gemmi.CrystalSystem.Tetragonal: lambda cell: (
-            approx(cell.a, cell.b) 
-            and approx(cell.alpha, 90) 
+            approx(cell.a, cell.b)
+            and approx(cell.alpha, 90)
             and approx(cell.beta, 90)
             and approx(cell.gamma, 90)
         ),
@@ -136,9 +136,7 @@ def generate_crystal_lattice(unit_cell, num_unit_cells, fractional_coordinates=N
             for l in range(num_c):
                 for Z, x, y, z in fractional_coordinates:
                     coordinates[count] = (Z,) + tuple(
-                        unit_cell.orthogonalize(
-                            gemmi.Fractional(h + x, k + y, l + z)
-                        )
+                        unit_cell.orthogonalize(gemmi.Fractional(h + x, k + y, l + z))
                     )
                     count += 1
 
@@ -300,11 +298,11 @@ def write_coordinates(coordinates, filename):
     # Write a PDB file
     def write_pdb(coordinates, filename):
         get_structure(coordinates).write_minimal_pdb(filename)
-    
+
     # Write a CIF file
     def write_cif(coordinates, filename):
         get_structure(coordinates).make_mmcif_document().write_file(filename)
-   
+
     # Write a CSV file
     def write_csv(coordinates, filename):
         with open(filename, "w") as outfile:
@@ -312,8 +310,6 @@ def write_coordinates(coordinates, filename):
                 outfile.write("%d, %.3f, %.3f, %.3f\n" % (Z, x, y, z))
 
     # Write the coordinates to file
-    {
-        ".pdb" : write_pdb,
-        ".cif" : write_cif,
-        ".csv" : write_csv
-    }[os.path.splitext(filename)[1].lower()](coordinates, filename)
+    {".pdb": write_pdb, ".cif": write_cif, ".csv": write_csv}[
+        os.path.splitext(filename)[1].lower()
+    ](coordinates, filename)
