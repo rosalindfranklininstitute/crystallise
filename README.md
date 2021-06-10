@@ -6,7 +6,6 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/rosalindfranklininstitute/crystallise.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/rosalindfranklininstitute/crystallise/alerts/)
 [![Building](https://github.com/rosalindfranklininstitute/crystallise/actions/workflows/python-package.yml/badge.svg)](https://github.com/rosalindfranklininstitute/crystallise/actions/workflows/python-package.yml)
 [![Publishing](https://github.com/rosalindfranklininstitute/crystallise/actions/workflows/python-publish.yml/badge.svg)](https://github.com/rosalindfranklininstitute/crystallise/actions/workflows/python-publish.yml)
-[![DOI](https://zenodo.org/badge/361779782.svg)](https://zenodo.org/badge/latestdoi/361779782)
 
 ## Installation
 
