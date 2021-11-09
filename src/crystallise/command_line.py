@@ -40,7 +40,7 @@ def main(args=None):
         "--num_unit_cells",
         dest="num_unit_cells",
         type=lambda s: tuple([int(x) for x in s.split(",")]),
-        default=(1, 1, 1),
+        default=None,
         help="The number of unit cells along each axis",
     )
     parser.add_argument(

@@ -222,6 +222,9 @@ def filter_atoms(coordinates, num_atoms=None, morphology="sphere"):
     if num_atoms is None or morphology is None:
         return coordinates
 
+    # Check the number of atoms
+    assert len(coordinates) >= num_atoms
+
     # Filter the atoms into the given morphology
     return {"sphere": filter_atoms_sphere}[morphology](coordinates, num_atoms)
 
@@ -316,6 +319,8 @@ def generate_atomic_model(
                 * (float(num_atoms) / len(fractional_coordinates)) ** (1.0 / 3.0)
             )
         )
+
+    # Ensure num init cells is a tuple
     if isinstance(num_unit_cells, int):
         num_unit_cells = (num_unit_cells, num_unit_cells, num_unit_cells)
     else:
