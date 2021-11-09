@@ -22,6 +22,7 @@ def main():
         packages=find_packages(where="src"),
         install_requires=[
             "gemmi",
+            "mendeleev",
             "numpy",
         ],
         setup_requires=["pytest-runner"],
