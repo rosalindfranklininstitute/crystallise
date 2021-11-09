@@ -49,7 +49,7 @@ def main(args=None):
         dest="asymmetric_unit",
         type=str,
         default="C",
-        help="The contents of the asymmetric unit",
+        help="The contents of the asymmetric unit (e.g. the atom or molecule)",
     )
     parser.add_argument(
         "-mo",

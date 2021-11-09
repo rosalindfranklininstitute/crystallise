@@ -9,6 +9,7 @@
 import gemmi
 import numpy
 import os.path
+import crystallise.data
 from math import sqrt, ceil
 
 __all__ = [
@@ -30,7 +31,7 @@ def get_unit_cell(atomic_number):
     """
     Get the standard unit cell for a given element.
 
-    From https://www.webelements.com/${name}/crystal_struture.html
+    From https://www.webelements.com/${name}/crystal_structure.html
 
     Params:
         atomic_number (int): The atomic number
@@ -39,11 +40,7 @@ def get_unit_cell(atomic_number):
         tuple: The unit cell parameters
 
     """
-    return {
-        46: (3.8907, 3.8907, 3.8907, 90, 90, 90),
-        79: (4.0782, 4.0782, 4.0782, 90, 90, 90),
-        83: (6.674, 6.117, 3.304, 90, 110.330, 90),
-    }[atomic_number]
+    return crystallise.data.element_table()[atomic_number]["unit_cell"]
 
 
 def get_space_group(atomic_number):
@@ -59,11 +56,7 @@ def get_space_group(atomic_number):
         int: The space group number
 
     """
-    return {
-        46: 225,
-        79: 225,
-        83: 12,
-    }[atomic_number]
+    return crystallise.data.element_table()[atomic_number]["space_group"]
 
 
 def is_unit_cell_consistent_with_space_group(unit_cell, space_group):
