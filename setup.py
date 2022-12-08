@@ -20,6 +20,7 @@ def main():
     setup(
         package_dir={"": "src"},
         packages=find_packages(where="src"),
+        package_data={"crystallise": ["src/crystallise/data/elements.json"]},
         install_requires=[
             "gemmi",
             "mendeleev",
