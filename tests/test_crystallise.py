@@ -3,7 +3,6 @@ import numpy
 
 
 def test_generate_atomic_model_1():
-
     unit_cell = (10,)
     space_group = "P1"
     num_unit_cells = 2
@@ -24,7 +23,6 @@ def test_generate_atomic_model_1():
 
 
 def test_generate_atomic_model_2():
-
     unit_cell = (10, 20, 30)
     space_group = "P1"
     num_unit_cells = (3, 4, 5)
@@ -45,7 +43,6 @@ def test_generate_atomic_model_2():
 
 
 def test_generate_atomic_model_3():
-
     unit_cell = (4, 4, 4, 90, 90, 90)
     space_group = "Fm-3m"
     num_unit_cells = (3, 4, 5)
@@ -66,7 +63,6 @@ def test_generate_atomic_model_3():
 
 
 def test_generate_atomic_model_4():
-
     unit_cell = (4, 4, 4, 90, 90, 90)
     space_group = "Fm-3m"
     num_unit_cells = (3, 4, 5)
@@ -87,7 +83,6 @@ def test_generate_atomic_model_4():
 
 
 def test_generate_atomic_model_5():
-
     unit_cell = (4, 4, 4, 90, 90, 90)
     space_group = "Fm-3m"
     num_unit_cells = None
@@ -108,7 +103,6 @@ def test_generate_atomic_model_5():
 
 
 def test_generate_atomic_model_6():
-
     unit_cell = None
     space_group = None
     num_unit_cells = None
@@ -129,7 +123,6 @@ def test_generate_atomic_model_6():
 
 
 def test_write_coordinates(tmpdir):
-
     unit_cell = (4, 4, 4, 90, 90, 90)
     space_group = "Fm-3m"
     num_unit_cells = None

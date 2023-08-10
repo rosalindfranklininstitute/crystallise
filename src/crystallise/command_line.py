@@ -12,7 +12,6 @@ import crystallise
 
 
 def main(args=None):
-
     # The command line parser
     parser = argparse.ArgumentParser(
         prog="crystallise", description="Generate atomic models of crystals"
