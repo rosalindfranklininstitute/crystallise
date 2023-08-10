@@ -7,7 +7,7 @@
 # which is included in the root directory of this package.
 #
 import gemmi
-import numpy
+import numpy as np
 import os.path
 import crystallise.data
 from math import sqrt, ceil
@@ -146,7 +146,7 @@ def generate_fractional_atom_positions(asymmetric_unit, space_group):
         for Z, x, y, z in asymmetric_unit:
             x, y, z = op.apply_to_xyz((x, y, z))
             coordinates.append((Z, x, y, z))
-    return numpy.array(list(set(coordinates)), dtype=CoordType)
+    return np.array(list(set(coordinates)), dtype=CoordType)
 
 
 def generate_crystal_lattice(unit_cell, num_unit_cells, fractional_coordinates=None):
@@ -169,11 +169,11 @@ def generate_crystal_lattice(unit_cell, num_unit_cells, fractional_coordinates=N
 
     # Init the fractional coordinates
     if fractional_coordinates is None:
-        fractional_coordinates = numpy.array([[0, 0, 0, 0]])
+        fractional_coordinates = np.array([[0, 0, 0, 0]])
 
     # Generate the crystal lattice
     shape = num_a * num_b * num_c * fractional_coordinates.shape[0]
-    coordinates = numpy.zeros(shape=shape, dtype=CoordType)
+    coordinates = np.zeros(shape=shape, dtype=CoordType)
     count = 0
     for h in range(num_a):
         for k in range(num_b):
@@ -203,19 +203,24 @@ def filter_atoms(coordinates, num_atoms=None, morphology="sphere"):
     """
 
     def filter_atoms_sphere(coordinates, num_atoms):
-
         # Get the centre of mass
         x = coordinates["x"]
         y = coordinates["y"]
         z = coordinates["z"]
-        c = numpy.array([x, y, z]).T
-        centre_of_mass = numpy.mean(c, axis=0)
+        c = np.array([x, y, z]).T
+        centre_of_mass = np.mean(c, axis=0)
 
         # Compute all square distances
-        sq_distance = numpy.sum((c - centre_of_mass) ** 2, axis=1)
+        sq_distance = np.sum((c - centre_of_mass) ** 2, axis=1)
+
+        # Get the atom nearest to the centre of mass
+        centre_of_mass = c[np.argmin(sq_distance)]
+
+        # Compute distances from this atom
+        sq_distance = np.sum((c - centre_of_mass) ** 2, axis=1)
 
         # Get the selection of the closest n atoms
-        index = numpy.argsort(sq_distance)
+        index = np.argsort(sq_distance)
         return coordinates[index[0:num_atoms]]
 
     # If the number of atoms is not set then return as is
@@ -255,10 +260,9 @@ def generate_atomic_model(
 
     # Check the contents of the asymmetric unit
     if isinstance(asymmetric_unit, str):
-
         # Get the atomic number and init the array
         Z = gemmi.Element(asymmetric_unit).atomic_number
-        asymmetric_unit = numpy.array(
+        asymmetric_unit = np.array(
             [(Z, 0, 0, 0)],
             dtype=CoordType,
         )
